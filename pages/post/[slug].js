@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 import Youtube from "../../components/Youtube";
 import githubCms from "../../lib/github-cms";
+import Comments from "../../components/Comments";
 
 export default function Post({ post }) {
   const router = useRouter();
@@ -30,15 +31,19 @@ export default function Post({ post }) {
         Published {ms(Date.now() - post.createdAt, { long: true })} ago
       </div>
       <h1>{post.title}</h1>
-      <Markdown
-        options={{
-          overrides: {
-            Youtube: { component: Youtube },
-          },
-        }}
-      >
-        {post.content}
-      </Markdown>
+      <div className="content">
+        <Markdown
+          options={{
+            overrides: {
+              Youtube: { component: Youtube },
+            },
+          }}
+        >
+          {post.content}
+        </Markdown>
+      </div>
+      <b>Comments</b>
+      <Comments slug={post.slug} />
     </div>
   );
 }

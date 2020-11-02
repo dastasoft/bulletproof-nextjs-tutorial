@@ -21,12 +21,13 @@
     "@arunoda/git-cms": "^1.1.0",
     "markdown-to-jsx": "^7.0.1",
     "ms": "^2.1.2",
-    "next": "9.5.2",
+    "next": "^10.0.0",
     "next-auth": "^3.1.0",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "swr": "^0.3.8"
   },
   "devDependencies": {
-    "standard": "^14.3.4"
+    "standard": "^16.0.1"
   }
 }
