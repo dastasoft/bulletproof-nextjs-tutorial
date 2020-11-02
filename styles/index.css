@@ -7,7 +7,7 @@ body {
 }
 
 .header {
-  background-color: gray;
+  background-color: #8bc34a;
   padding: 30px;
   display: flex;
   align-items: center;
@@ -45,7 +45,7 @@ body {
 
 .post-list .post-link a {
   display: block;
-  border: 1px solid gray;
+  border: 1px solid #8bc34a;
   color: #222;
   text-decoration: none;
   font-weight: 600;
@@ -62,7 +62,7 @@ body {
 }
 
 .post-list .post-link a:hover {
-  background-color: gray;
+  background-color: #8bc34a;
   color: #fff;
 }
 
