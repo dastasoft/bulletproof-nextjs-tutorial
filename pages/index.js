@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import ms from 'ms';
+import Link from "next/link";
+import ms from "ms";
 
-import githubCms from '../lib/github-cms';
+import githubCms from "../lib/github-cms";
 
 export default function Home({ postList }) {
   return (
@@ -27,8 +27,8 @@ export async function getStaticProps() {
 
   return {
     props: {
-      postList
+      postList,
     },
-    revalidate: 2
+    revalidate: 2,
   };
 }
