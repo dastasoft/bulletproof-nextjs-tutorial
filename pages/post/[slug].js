@@ -1,10 +1,29 @@
-import ms from 'ms';
-import Markdown from 'markdown-to-jsx';
+import ms from "ms";
+import Markdown from "markdown-to-jsx";
 
-import Youtube from '../../components/Youtube';
-import githubCms from '../../lib/github-cms';
+import { useRouter } from "next/router";
+
+import Youtube from "../../components/Youtube";
+import githubCms from "../../lib/github-cms";
 
 export default function Post({ post }) {
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <span>loading...</span>;
+  }
+
+  if (!post) {
+    return (
+      <>
+        <Head>
+          <meta name="robots" content="noindex" />
+        </Head>
+        404 - Page not found!
+      </>
+    );
+  }
+
   return (
     <div className="post">
       <div className="time">
@@ -14,8 +33,8 @@ export default function Post({ post }) {
       <Markdown
         options={{
           overrides: {
-            Youtube: { component: Youtube }
-          }
+            Youtube: { component: Youtube },
+          },
         }}
       >
         {post.content}
@@ -24,12 +43,35 @@ export default function Post({ post }) {
   );
 }
 
-export async function getServerSideProps({ params }) {
-  const post = await githubCms.getPost(params.slug);
+export async function getStaticPaths() {
+  const postList = await githubCms.getPostList();
+  const paths = postList.map(post => ({
+    params: {
+      slug: post.slug,
+    },
+  }));
+
+  return {
+    paths,
+    fallback: true,
+  };
+}
+
+export async function getStaticProps({ params }) {
+  let post = null;
+
+  try {
+    post = await githubCms.getPost(params.slug);
+  } catch (err) {
+    if (err.status !== 404) {
+      throw err;
+    }
+  }
 
   return {
     props: {
-      post
-    }
+      post,
+    },
+    revalidate: 2,
   };
 }
