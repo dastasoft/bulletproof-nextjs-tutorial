@@ -17,6 +17,11 @@ export default async function comments(req, res) {
       return;
     }
 
+    if (!req.body.content || req.body.content.trim() === "") {
+      res.status(400).send("Comment content should not be empty");
+      return;
+    }
+
     const comment = {
       userId: session.user.id,
       name: session.user.profile.name,
@@ -26,7 +31,7 @@ export default async function comments(req, res) {
     };
 
     // Slow the API to demonstrate real life behavior
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => setTimeout(r, 2000));
 
     await addComment(slug, comment);
     return res.send(comment);
