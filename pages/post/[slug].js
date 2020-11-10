@@ -1,10 +1,12 @@
 import ms from "ms";
 import Markdown from "markdown-to-jsx";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 import Youtube from "../../components/Youtube";
 import Comments from "../../components/Comments";
 import { getPostList, getPost } from "../../lib/data";
+import findImageInMarkdown from "../../lib/find-image-in-markdown";
 
 export default function Post({ post }) {
   const router = useRouter();
@@ -26,6 +28,18 @@ export default function Post({ post }) {
 
   return (
     <div className="post">
+      <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.summary} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <meta property="og:site_name" content="My Blog App" />
+        <meta property="og:url" content={post.url} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.summary} />
+        {post.image && <meta property="og:image" content={post.image} />}
+      </Head>
       <div className="time">
         Published {ms(Date.now() - post.createdAt, { long: true })} ago
       </div>
@@ -71,6 +85,10 @@ export async function getStaticProps({ params }) {
       throw err;
     }
   }
+
+  post.url = `${process.env.NEXT_PUBLIC_ROOT_URL}/post/${post.slug}`;
+  post.summary = `${post.content.substr(0, 100)}`;
+  post.image = findImageInMarkdown(post.content);
 
   return {
     props: {
